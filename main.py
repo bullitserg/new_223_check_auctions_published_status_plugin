@@ -36,7 +36,7 @@ def create_parser():
     parser.add_argument('-a', '--auction', type=str, default='',
                         help="Номер процедуры")
 
-    parser.add_argument('-f', '--out_file', type=str, default='',
+    parser.add_argument('-f', '--file', type=str, default='',
                         help="Файл для сохранения корректировок")
 
     parser.add_argument('-t', '--type', type=str, default='', required=True,
