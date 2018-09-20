@@ -271,7 +271,7 @@ if __name__ == '__main__':
                 EXIT_DICT['ok'] = next(ok_counter)
 
         # в режиме плагина выводим только краткую информацию
-        if not (namespace.print_corrections and namespace.full_info):
+        if namespace.print_corrections or namespace.full_info:
             print('''Checking status:\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s''' % EXIT_DICT)
         else:
             if EXIT_DICT['exit_status'] == OK:
