@@ -276,7 +276,7 @@ if __name__ == '__main__':
             if not row.get('error_flag'):
                 EXIT_DICT['ok'] = next(ok_counter)
             elif namespace.print_corrections or namespace.full_info:
-                print('--------------------------------------------------------')
+                print('-- ------------------------------------------------------')
 
         # в режиме плагина выводим только краткую информацию
         if namespace.print_corrections or namespace.full_info:

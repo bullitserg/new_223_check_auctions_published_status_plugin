@@ -18,7 +18,7 @@ UPDATE `sectionks_catalog_223`.procedure_223_lot pl SET pl.request_end_give_date
 
 insert_add_request_action_c = ''' -- Добавляем ссылку на подачу заявок в каталоге
 INSERT INTO `sectionks_catalog_223`.`procedure_223_lot_action` (`lot_id`, `code`, `name`, `url`, `priority`, `allow_role`, `allow_permission`, `allow_lot_status`, `allow_request_status_except`)
-  VALUES (%(c_lot_id)s, 'addRequest', 'Подать заявку', 'https://etp-ets.ru/223/%(short_procedure_type)s/request/add/%(p_lot_id)s', '1', 'supplier', 'procedure.request.edit', 'published', 'draft,published,returned,rejected,refused');'''
+  VALUES (%(c_lot_id)s, 'addRequest', 'Подать заявку', 'https://etp-ets.ru/223/%(short_procedure_type)s/request/add/%(p_lot_id)s', '1', 'supplier', 'procedure.request.edit', 'published', 'draft,published,returned,rejected,refused');   -- %(p_procedure_number)s'''
 
 
 
