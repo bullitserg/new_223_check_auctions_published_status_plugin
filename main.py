@@ -272,10 +272,10 @@ if __name__ == '__main__':
 
         # в режиме плагина выводим только краткую информацию
         if namespace.print_corrections or namespace.full_info:
-            print('''Checking status:\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s''' % EXIT_DICT)
-        else:
             if EXIT_DICT['exit_status'] == OK:
                 print('All OK!')
+        else:
+            print('''Checking status:\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s''' % EXIT_DICT)
 
         s_exit(EXIT_DICT['exit_status'])
 
