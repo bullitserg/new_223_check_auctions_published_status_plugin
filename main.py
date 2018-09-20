@@ -250,7 +250,7 @@ if __name__ == '__main__':
                                                                         dicted=True)
 
         # если поиск по базе с текущими условиями ничего не дал, то указываем, что ничего не нашлось
-        if not all_published_procedures_info:
+        if namespace.auction and not all_published_procedures_info:
             print('Nothing to check')
             s_exit(UNKNOWN)
 
