@@ -19,7 +19,7 @@ RELEASE_DATE = '2018-09-20'
 OK, WARNING, CRITICAL, UNKNOWN = range(4)
 EXIT_DICT = {'exit_status': OK, 'ok': 0, 'warning': 0, 'critical': 0, 'all_errors': 0}
 INFO_TEMPLATE = '%(p_procedure_number)s |%(p_procedure_id)s, %(p_lot_id)s|: %(error)s'
-
+EXIT_TEMPLATE = '''Checking status: %(all_errors)s errors found\n------------------------\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s'''
 
 ok_counter = count(start=1, step=1)
 warning_counter = count(start=1, step=1)
@@ -280,8 +280,7 @@ if __name__ == '__main__':
             if EXIT_DICT['exit_status'] == OK:
                 print('All OK!')
         else:
-            print('''Checking status: %(all_errors)s errors found\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s'''
-                  % EXIT_DICT)
+            print(EXIT_TEMPLATE % EXIT_DICT)
 
         s_exit(EXIT_DICT['exit_status'])
 
@@ -293,15 +292,3 @@ if __name__ == '__main__':
     show_version()
     print('For more information run use --help')
     s_exit(UNKNOWN)
-
-
-
-
-
-
-
-
-
-
-
-
