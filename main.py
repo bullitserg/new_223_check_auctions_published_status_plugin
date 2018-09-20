@@ -17,13 +17,14 @@ AUTHOR = 'Belim S.'
 RELEASE_DATE = '2018-09-20'
 
 OK, WARNING, CRITICAL, UNKNOWN = range(4)
-EXIT_DICT = {'exit_status': OK, 'ok': 0, 'warning': 0, 'critical': 0}
+EXIT_DICT = {'exit_status': OK, 'ok': 0, 'warning': 0, 'critical': 0, 'all_errors': 0}
 INFO_TEMPLATE = '%(p_procedure_number)s |%(p_procedure_id)s, %(p_lot_id)s|: %(error)s'
 
 
 ok_counter = count(start=1, step=1)
 warning_counter = count(start=1, step=1)
 critical_counter = count(start=1, step=1)
+all_errors_counter = count(start=1, step=1)
 
 
 # обработчик параметров командной строки
@@ -110,6 +111,7 @@ def set_warning(func):
             info['error_flag'] = True
             EXIT_DICT['exit_status'] = WARNING if EXIT_DICT['exit_status'] < WARNING else EXIT_DICT['exit_status']
             EXIT_DICT['warning'] = next(warning_counter)
+            EXIT_DICT['all_errors'] = next(all_errors_counter)
         info['error'] = None
         return info
     return wrapped
@@ -123,6 +125,7 @@ def set_critical(func):
             info['error_flag'] = True
             EXIT_DICT['exit_status'] = CRITICAL if EXIT_DICT['exit_status'] < CRITICAL else EXIT_DICT['exit_status']
             EXIT_DICT['critical'] = next(critical_counter)
+            EXIT_DICT['all_errors'] = next(all_errors_counter)
         info['error'] = None
         return info
     return wrapped
@@ -277,7 +280,8 @@ if __name__ == '__main__':
             if EXIT_DICT['exit_status'] == OK:
                 print('All OK!')
         else:
-            print('''Checking status:\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s''' % EXIT_DICT)
+            print('''Checking status: %(all_errors)s found\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s'''
+                  % EXIT_DICT)
 
         s_exit(EXIT_DICT['exit_status'])
 
