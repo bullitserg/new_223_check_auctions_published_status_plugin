@@ -225,6 +225,8 @@ def check_protocol_not_exists(auction_data):
 
 
 @set_critical
+@correction_printer(backup_add_request_action_c)
+@correction_printer(insert_add_request_action_c)
 @out_printer
 @only_if_catalog_record_exists
 def check_add_request_action_catalog(auction_data):
@@ -259,6 +261,7 @@ if __name__ == '__main__':
         # выполняем все проверки
         for row in all_published_procedures_info:
             row['procedure_type'] = namespace.type
+            row['short_procedure_type'] = namespace.type[3:]
             check_catalog_procedure_exist_record(row)
             check_lot_status_p(row)
             check_procedure_status_c(row)

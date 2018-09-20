@@ -16,7 +16,9 @@ UPDATE `sectionks_catalog_223`.procedure_223_lot pl SET pl.regulated_datetime = 
 set_request_end_datetime_c = ''' -- Устанавливаем дату окончания приема заявок в каталоге
 UPDATE `sectionks_catalog_223`.procedure_223_lot pl SET pl.request_end_give_datetime = '%(p_request_end_datetime)s' WHERE pl.id = %(c_lot_id)s;  -- %(p_procedure_number)s'''
 
-
+insert_add_request_action_c = ''' -- Добавляем ссылку на подачу заявок в каталоге
+INSERT INTO `sectionks_catalog_223`.`procedure_223_lot_action` (`lot_id`, `code`, `name`, `url`, `priority`, `allow_role`, `allow_permission`, `allow_lot_status`, `allow_request_status_except`)
+  VALUES (%(c_lot_id)s, 'addRequest', 'Подать заявку', 'https://etp-ets.ru/223/%(short_procedure_type)s/request/add/%(p_lot_id)s', '1', 'supplier', 'procedure.request.edit', 'published', 'draft,published,returned,rejected,refused');'''
 
 
 

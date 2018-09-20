@@ -12,3 +12,5 @@ backup_protocol = '''-- INSERT INTO protocol(id, createDateTime, editDateTime, p
 backup_regulated_datetime_c = ''' -- UPDATE `sectionks_catalog_223`.procedure_223_lot pl SET pl.regulated_datetime = '%(c_regulated_datetime)s' WHERE id = %(c_lot_id)s;  -- %(p_procedure_number)s'''
 
 backup_request_end_datetime_c = ''' -- UPDATE `sectionks_catalog_223`.procedure_223_lot pl SET pl.request_end_give_datetime = '%(c_request_end_datetime)s' WHERE pl.id = %(c_lot_id)s;  -- %(p_procedure_number)s'''
+
+backup_add_request_action_c = '''-- DELETE FROM procedure_223_lot_action WHERE code = 'addRequest' AND deleted_at IS NULL AND lot_id = %(c_lot_id)s'''
