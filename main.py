@@ -269,6 +269,8 @@ if __name__ == '__main__':
             # если все проверки завершились успешно, то увеличиваем количество ok на единицу
             if not row.get('error_flag'):
                 EXIT_DICT['ok'] = next(ok_counter)
+            elif namespace.print_corrections or namespace.full_info:
+                print('--------------------------------------------------------')
 
         # в режиме плагина выводим только краткую информацию
         if namespace.print_corrections or namespace.full_info:
