@@ -201,7 +201,7 @@ def check_procedure_status_c(auction_data):
 
 
 @set_critical
-@correction_printer(backup_published_status_procedure_c, input_file=namespace.file)
+@correction_printer(backup_published_status_lot_c, input_file=namespace.file)
 @correction_printer(set_published_status_lot_c, input_file=namespace.file)
 @out_printer
 def check_lot_status_c(auction_data):
