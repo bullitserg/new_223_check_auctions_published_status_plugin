@@ -280,7 +280,7 @@ if __name__ == '__main__':
             if EXIT_DICT['exit_status'] == OK:
                 print('All OK!')
         else:
-            print('''Checking status: %(all_errors)s found\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s'''
+            print('''Checking status: %(all_errors)s errors found\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s'''
                   % EXIT_DICT)
 
         s_exit(EXIT_DICT['exit_status'])
