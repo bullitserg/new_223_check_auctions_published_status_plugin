@@ -49,9 +49,6 @@ def create_parser():
     parser.add_argument('-i', '--full_info', action='store_true',
                         help="Вывод полной информации на консоль")
 
-    parser.add_argument('-p', '--plugin_mode', action='store_true',
-                        help="Режим плагина Nagios")
-
     return parser
 
 my_parser = create_parser()
@@ -67,7 +64,7 @@ def correction_printer(query_template, input_file=None):
     def decorator(func):
         def wrapped(auction_data):
             info = func(auction_data)
-            if auction_data.get('error') and not namespace.plugin_mode:
+            if auction_data.get('error'):
                 query_out = query_template % auction_data
                 query_out = re.sub(r"'NULL'", "NULL", query_out, re.MULTILINE | re.DOTALL)
 
@@ -87,7 +84,7 @@ def out_printer(func):
     """Декоратор для вывода текста на консоль"""
     def wrapped(auction_data):
         info = func(auction_data)
-        if info.get('error') and not namespace.plugin_mode and namespace.full_info:
+        if info.get('error') and namespace.full_info:
             info_out = INFO_TEMPLATE % info
             print(info_out)
         return info
@@ -274,7 +271,7 @@ if __name__ == '__main__':
                 EXIT_DICT['ok'] = next(ok_counter)
 
         # в режиме плагина выводим только краткую информацию
-        if namespace.plugin_mode:
+        if not (namespace.print_corrections and namespace.full_info):
             print('''Checking status:\nOK: %(ok)s\nWarning: %(warning)s\nCritical: %(critical)s''' % EXIT_DICT)
         else:
             if EXIT_DICT['exit_status'] == OK:
