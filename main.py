@@ -237,60 +237,60 @@ def check_add_request_action_catalog(auction_data):
     return auction_data
 
 if __name__ == '__main__':
-#    try:
-# инициализируем подключения
-    cn_procedures = Mc(connection=PROCEDURE_223_TYPES[namespace.type]['connection']).connect()
-    cn_catalog = Mc(connection=Mc.MS_223_CATALOG_CONNECT).connect()
+    try:
+        # инициализируем подключения
+        cn_procedures = Mc(connection=PROCEDURE_223_TYPES[namespace.type]['connection']).connect()
+        cn_catalog = Mc(connection=Mc.MS_223_CATALOG_CONNECT).connect()
 
-    if namespace.auction:
-        all_published_procedures_info = cn_procedures.execute_query(get_one_published_procedures_info_query %
-                                                                    namespace.auction, dicted=True)
-    else:
-        all_published_procedures_info = cn_procedures.execute_query(get_all_published_procedures_info_query,
-                                                                    dicted=True)
+        if namespace.auction:
+            all_published_procedures_info = cn_procedures.execute_query(get_one_published_procedures_info_query %
+                                                                        namespace.auction, dicted=True)
+        else:
+            all_published_procedures_info = cn_procedures.execute_query(get_all_published_procedures_info_query,
+                                                                        dicted=True)
 
-    # если поиск по базе с текущими условиями ничего не дал, то указываем, что ничего не нашлось
-    if namespace.auction and not all_published_procedures_info:
-        print('Nothing to check')
+        # если поиск по базе с текущими условиями ничего не дал, то указываем, что ничего не нашлось
+        if namespace.auction and not all_published_procedures_info:
+            print('Nothing to check')
+            s_exit(UNKNOWN)
+
+        if namespace.file:
+            with open(namespace.file, mode='w', encoding='utf8') as file_w:
+                file_w.write('')
+
+        # выполняем все проверки
+        for row in all_published_procedures_info:
+            row['procedure_type'] = namespace.type
+            row['short_procedure_type'] = namespace.type[3:]
+            check_catalog_procedure_exist_record(row)
+            check_lot_status_p(row)
+            check_procedure_status_c(row)
+            check_lot_status_c(row)
+            check_request_end_datetime(row)
+            check_request_end_datetime_c(row)
+            check_regulated_datetime_c(row)
+            check_add_request_action_catalog(row)
+            check_protocol_not_exists(row)
+
+            # если все проверки завершились успешно, то увеличиваем количество ok на единицу
+            if not row.get('error_flag'):
+                EXIT_DICT['ok'] = next(ok_counter)
+            elif namespace.print_corrections or namespace.full_info:
+                print('-- ------------------------------------------------------')
+
+        # в режиме плагина выводим только краткую информацию
+        if namespace.print_corrections or namespace.full_info:
+            if EXIT_DICT['exit_status'] == OK:
+                print('All OK!')
+        else:
+            print(EXIT_TEMPLATE % EXIT_DICT)
+
+        s_exit(EXIT_DICT['exit_status'])
+
+    except Exception as err:
+        print('Plugin error')
+        print(err)
         s_exit(UNKNOWN)
-
-    if namespace.file:
-        with open(namespace.file, mode='w', encoding='utf8') as file_w:
-            file_w.write('')
-
-    # выполняем все проверки
-    for row in all_published_procedures_info:
-        row['procedure_type'] = namespace.type
-        row['short_procedure_type'] = namespace.type[3:]
-        check_catalog_procedure_exist_record(row)
-        check_lot_status_p(row)
-        check_procedure_status_c(row)
-        check_lot_status_c(row)
-        check_request_end_datetime(row)
-        check_request_end_datetime_c(row)
-        check_regulated_datetime_c(row)
-        check_add_request_action_catalog(row)
-        check_protocol_not_exists(row)
-
-        # если все проверки завершились успешно, то увеличиваем количество ok на единицу
-        if not row.get('error_flag'):
-            EXIT_DICT['ok'] = next(ok_counter)
-        elif namespace.print_corrections or namespace.full_info:
-            print('-- ------------------------------------------------------')
-
-    # в режиме плагина выводим только краткую информацию
-    if namespace.print_corrections or namespace.full_info:
-        if EXIT_DICT['exit_status'] == OK:
-            print('All OK!')
-    else:
-        print(EXIT_TEMPLATE % EXIT_DICT)
-
-    s_exit(EXIT_DICT['exit_status'])
-
-#    except Exception as err:
-#        print('Plugin error')
-#        print(err)
-#        s_exit(UNKNOWN)
 
     show_version()
     print('For more information run use --help')
