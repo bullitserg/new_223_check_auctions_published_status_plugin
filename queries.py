@@ -45,7 +45,6 @@ AND pla.deleted_at IS NULL
 AND pla.lot_id = %(c_lot_id)s
 ;'''
 
-
 get_catalog_procedure_info_query = '''SELECT
   p.status_id AS c_procedure_status_id,
   l.status_id AS c_lot_status_id,
@@ -63,7 +62,6 @@ AND l.etp_id = %(p_lot_id)s
 AND p.oos_registration_number = '%(p_procedure_number)s'
 ;'''
 
-
 check_protocol_exists_query = '''SELECT
 id AS protocol_id,
 createDateTime AS protocol_create_datetime,
@@ -80,6 +78,11 @@ guid AS protocol_guid
   FROM protocol
   WHERE lotId = %(p_lot_id)s'''
 
-
+check_request_provision_query = '''SELECT
+  lc.id
+FROM lotCustomer lc
+WHERE lc.lotId = %(c_lot_id)s
+AND lc.enabledRequestProvision = 1
+AND lc.requestProvisionId IS NULL;'''
 
 

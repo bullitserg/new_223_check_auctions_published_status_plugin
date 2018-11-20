@@ -236,6 +236,16 @@ def check_add_request_action_catalog(auction_data):
         auction_data['error'] = 'отсутствует ссылка на подачу заявки'
     return auction_data
 
+
+@set_critical
+@out_printer
+def check_request_provision(auction_data):
+    request_provision_not_set = cn_procedures.execute_query(check_request_provision_query % auction_data)
+    if request_provision_not_set:
+        auction_data['error'] = 'не установлен requestProvisionId'
+    return auction_data
+
+
 if __name__ == '__main__':
     try:
         # инициализируем подключения
@@ -271,6 +281,7 @@ if __name__ == '__main__':
             check_regulated_datetime_c(row)
             check_add_request_action_catalog(row)
             check_protocol_not_exists(row)
+            check_request_provision(row)
 
             # если все проверки завершились успешно, то увеличиваем количество ok на единицу
             if not row.get('error_flag'):
