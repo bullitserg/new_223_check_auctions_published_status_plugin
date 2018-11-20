@@ -149,7 +149,7 @@ def check_catalog_procedure_exist_record(auction_data):
 @out_printer
 def check_request_end_datetime(auction_data):
     """Проверка даты окончания подачи заявок"""
-    if auction_data['p_request_end_datetime'] < datetime.now():
+    if (not auction_data['p_request_end_datetime']) or auction_data['p_request_end_datetime'] < datetime.now():
         auction_data['error'] = 'некорректная дата окончания приема заявок в базе процедур'
     return auction_data
 
