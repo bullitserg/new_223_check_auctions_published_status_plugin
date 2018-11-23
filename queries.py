@@ -86,3 +86,11 @@ AND lc.enabledRequestProvision = 1
 AND lc.requestProvisionId IS NULL;'''
 
 
+check_offer_date_query = '''SELECT
+  p.id
+FROM procedures p
+WHERE p.offerDate IS NULL
+AND p.status = 'procedure.published'
+AND p.active = 1
+AND p.id = %(p_procedure_id)s
+;'''
