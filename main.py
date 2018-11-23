@@ -251,7 +251,7 @@ def check_request_provision(auction_data):
 @out_printer
 def check_procedure_offer_date(auction_data):
     if auction_data['procedure_type'] in ('223ea1', '223ea2'):
-        offer_date_is_null = cn_catalog.execute_query(check_offer_date_query % row)
+        offer_date_is_null = cn_procedures.execute_query(check_offer_date_query % row)
         if offer_date_is_null:
             auction_data['error'] = 'по процедуре отсутствует дата торгов (offerDate)'
     return auction_data
