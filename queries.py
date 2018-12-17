@@ -94,3 +94,13 @@ AND p.status = 'procedure.published'
 AND p.active = 1
 AND p.id = %(p_procedure_id)s
 ;'''
+
+check_request_end_datetime_and_request_review_query = '''SELECT
+  p.id
+FROM procedures p
+WHERE p.requestEndDateTime > p.requestReviewFirstPartsDateTime
+AND p.active = 1
+AND p.archive = 0
+AND p.actualId IS NULL
+AND p.status = 'procedure.published'
+AND p.id = %(p_procedure_id)s;'''

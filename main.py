@@ -154,6 +154,19 @@ def check_request_end_datetime(auction_data):
     return auction_data
 
 
+@set_critical
+@correction_printer('''-- Установленная дата окончания приема заявок меньше даты рассмотрения''',
+                    input_file=namespace.file)
+@out_printer
+def check_request_end_datetime_and_request_review(auction_data):
+    """Сравнение даты окончания подачи заявок и даты рассмотрения"""
+    request_end_datetime_and_request_review_status = \
+        cn_procedures.execute_query(check_request_end_datetime_and_request_review_query % auction_data)
+    if request_end_datetime_and_request_review_status:
+        auction_data['error'] = 'установленная дата окончания приема заявок меньше даты рассмотрения'
+    return auction_data
+
+
 @set_warning
 @correction_printer(backup_regulated_datetime_c, input_file=namespace.file)
 @correction_printer(set_regulated_datetime_c, input_file=namespace.file)
@@ -246,7 +259,7 @@ def check_request_provision(auction_data):
     return auction_data
 
 
-@set_critical
+@set_warning
 @correction_printer('''-- Требуется установить дату торгов (offerDate) в основной базе''', input_file=namespace.file)
 @out_printer
 def check_procedure_offer_date(auction_data):
@@ -288,6 +301,7 @@ if __name__ == '__main__':
             check_procedure_status_c(row)
             check_lot_status_c(row)
             check_request_end_datetime(row)
+            check_request_end_datetime_and_request_review(row)
             check_request_end_datetime_c(row)
             check_regulated_datetime_c(row)
             check_add_request_action_catalog(row)
