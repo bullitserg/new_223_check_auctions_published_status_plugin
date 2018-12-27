@@ -154,8 +154,8 @@ def check_request_end_datetime(auction_data):
     return auction_data
 
 
-@set_critical
-@correction_printer('''-- Установленная дата окончания приема заявок меньше даты рассмотрения''',
+@set_warning
+@correction_printer('''-- Необходимо скорректировать дату окончания приема заявок''',
                     input_file=namespace.file)
 @out_printer
 def check_request_end_datetime_and_request_review(auction_data):
